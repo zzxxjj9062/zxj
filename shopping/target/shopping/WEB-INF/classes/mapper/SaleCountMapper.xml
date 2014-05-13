@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.abovesky.shopping.dao.SaleCountMapper" >
+    <resultMap id="BaseResultMap" type="cn.abovesky.shopping.domain.SaleCount" >
+        <result column="date" property="date" jdbcType="VARCHAR" />
+        <result column="goods_name" property="name" jdbcType="VARCHAR" />
+        <result column="num" property="number" jdbcType="INTEGER" />
+    </resultMap>
+    <select id="saleCount" resultMap="BaseResultMap" parameterType="map">
+        select
+          sum(sale_record.number) num,
+          <choose>
+              <when test="status == '3'.toString()">
+                  DATE_FORMAT(date,'%Y-%m') date
+              </when>
+              <otherwise>
+                  DATE_FORMAT(date,'%m-%d') date
+              </otherwise>
+          </choose>
+        from sale_record
+        INNER JOIN goods on goods.id = sale_record.goods_id
+        <trim prefix="WHERE" prefixOverrides="AND|OR">
+            and date > #{saleCountDate}
+            <if test="merchantId != null and merchantId != 0">
+                and sale_record.merchant_id = #{merchantId}
+            </if>
+            <if test="type != null">
+                and sale_record.goods_id = #{type}
+            </if>
+        </trim>
+        <choose>
+            <when test="status == '3'.toString()">
+                group by DATE_FORMAT(date,'%Y-%m')
+            </when>
+            <otherwise>
+                group by DATE_FORMAT(date,'%Y-%m-%d')
+            </otherwise>
+        </choose>
+        order by date
+    </select>
+    <select id="findTopTen" resultMap="BaseResultMap" parameterType="map">
+        select sum(sale_record.number) num, goods.name goods_name
+        from sale_record
+        INNER JOIN goods on goods.id = sale_record.goods_id
+        <trim prefix="WHERE" prefixOverrides="AND|OR">
+            and date > #{saleCountDate}
+            <if test="merchantId != null and merchantId != 0">
+                and sale_record.merchant_id = #{merchantId}
+            </if>
+        </trim>
+        group by goods_id
+        ORDER BY num DESC
+    </select>
+</mapper>
