@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.abovesky.shopping.dao.NewsMapper" >
+  <resultMap id="BaseResultMap" type="cn.abovesky.shopping.domain.News" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="CHAR" />
+    <result column="insert_date" property="insertDate" jdbcType="TIMESTAMP" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+    <result column="create_user_id" property="createUserId" jdbcType="INTEGER" />
+    <result column="update_user_id" property="updateUserId" jdbcType="INTEGER" />
+    <association property="createUser" javaType="cn.abovesky.shopping.domain.Admin">
+        <result column="create_user_name" property="nickname" jdbcType="VARCHAR"/>
+    </association>
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="cn.abovesky.shopping.domain.News" extends="BaseResultMap" >
+    <result column="content" property="content" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, title, type, insert_date, update_date, create_user_id, update_user_id
+  </sql>
+  <sql id="Blob_Column_List" >
+    content
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from news
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from news
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.abovesky.shopping.domain.News" >
+    insert into news (id, title, type, 
+      insert_date, update_date, create_user_id, 
+      update_user_id, content)
+    values (#{id,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{type,jdbcType=CHAR}, 
+      #{insertDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP}, #{createUserId,jdbcType=INTEGER}, 
+      #{updateUserId,jdbcType=INTEGER}, #{content,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.abovesky.shopping.domain.News" >
+    insert into news
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="title != null" >
+        title,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="insertDate != null" >
+        insert_date,
+      </if>
+      <if test="updateDate != null" >
+        update_date,
+      </if>
+      <if test="createUserId != null" >
+        create_user_id,
+      </if>
+      <if test="updateUserId != null" >
+        update_user_id,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=CHAR},
+      </if>
+      <if test="insertDate != null" >
+        #{insertDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null" >
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUserId != null" >
+        #{createUserId,jdbcType=INTEGER},
+      </if>
+      <if test="updateUserId != null" >
+        #{updateUserId,jdbcType=INTEGER},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.abovesky.shopping.domain.News" >
+    update news
+    <set >
+      <if test="title != null" >
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=CHAR},
+      </if>
+      <if test="insertDate != null" >
+        insert_date = #{insertDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null" >
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUserId != null" >
+        create_user_id = #{createUserId,jdbcType=INTEGER},
+      </if>
+      <if test="updateUserId != null" >
+        update_user_id = #{updateUserId,jdbcType=INTEGER},
+      </if>
+      <if test="content != null" >
+        content = #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="cn.abovesky.shopping.domain.News" >
+    update news
+    set title = #{title,jdbcType=VARCHAR},
+      type = #{type,jdbcType=CHAR},
+      insert_date = #{insertDate,jdbcType=TIMESTAMP},
+      update_date = #{updateDate,jdbcType=TIMESTAMP},
+      create_user_id = #{createUserId,jdbcType=INTEGER},
+      update_user_id = #{updateUserId,jdbcType=INTEGER},
+      content = #{content,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.abovesky.shopping.domain.News" >
+    update news
+    set title = #{title,jdbcType=VARCHAR},
+      type = #{type,jdbcType=CHAR},
+      insert_date = #{insertDate,jdbcType=TIMESTAMP},
+      update_date = #{updateDate,jdbcType=TIMESTAMP},
+      create_user_id = #{createUserId,jdbcType=INTEGER},
+      update_user_id = #{updateUserId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+    <select id="findPageBreakByCondition" resultMap="ResultMapWithBLOBs" parameterType="map">
+        select
+            news.id,
+            news.title,
+            news.content,
+            news.type,
+            news.insert_date,
+            news.update_date,
+            admin.nickname create_user_name
+        from news
+        inner join admin on admin.id = news.create_user_id
+        <trim prefix="WHERE" prefixOverrides="AND|OR">
+            and news.id != 1
+            <choose>
+                <when test="type == null or type == 'ALL'.toString()">
+                    and news.type in ('ANNOUNCEMENT')
+                </when>
+                <otherwise>
+                    and news.type = #{type}
+                </otherwise>
+            </choose>
+            <if test="startDate != null">
+                and news.insert_date &gt;= #{startDate}
+            </if>
+            <if test="endDate != null">
+                and news.insert_date &lt;= #{endDate}
+            </if>
+            <if test="keywords != null">
+                <choose>
+                    <when test="status == 'TITLE'">
+                        and news.title like "%"#{keywords}"%"
+                    </when>
+                    <when test="status == 'CONTENT'">
+                        and news.content like "%"#{keywords}"%"
+                    </when>
+                    <when test="status == 'NICKNAME'">
+                        and admin.nickname like "%"#{keywords}"%"
+                    </when>
+                </choose>
+            </if>
+        </trim>
+        order by news.insert_date desc
+    </select>
+    <select id="getTotalCount" resultType="int" parameterType="map">
+        select
+          count(0)
+        from news
+        <trim prefix="WHERE" prefixOverrides="AND|OR">
+            and news.id != 1
+            <choose>
+                <when test="type == null or type == 'ALL'.toString()">
+                    and news.type in ('ANNOUNCEMENT')
+                </when>
+                <otherwise>
+                    and news.type = #{type}
+                </otherwise>
+            </choose>
+            <if test="startDate != null">
+                and news.insert_date &gt;= #{startDate}
+            </if>
+            <if test="endDate != null">
+                and news.insert_date &lt;= #{endDate}
+            </if>
+            <if test="keywords != null">
+                <choose>
+                    <when test="status == 'TITLE'">
+                        and news.title like "%"#{keywords}"%"
+                    </when>
+                    <when test="status == 'CONTENT'">
+                        and news.content like "%"#{keywords}"%"
+                    </when>
+                    <when test="status == 'NICKNAME'">
+                        and admin.nickname like "%"#{keywords}"%"
+                    </when>
+                </choose>
+            </if>
+        </trim>
+    </select>
+    <delete id="delete" parameterType="java.lang.Integer">
+      delete from news where id in
+      <foreach collection="array" item="id" open="(" separator="," close=")">
+          #{id}
+      </foreach>
+    </delete>
+</mapper>

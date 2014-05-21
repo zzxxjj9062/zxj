@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.abovesky.shopping.dao.GoodsTypeMapper">
+    <resultMap id="BaseResultMap" type="cn.abovesky.shopping.domain.GoodsType">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="status" property="status" jdbcType="CHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, name, status
+    </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from goods_type
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from goods_type
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="cn.abovesky.shopping.domain.GoodsType">
+        insert into goods_type (id, name, status
+        )
+        values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{status,jdbcType=CHAR}
+        )
+    </insert>
+    <insert id="insertSelective" parameterType="cn.abovesky.shopping.domain.GoodsType">
+        insert into goods_type
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="name != null">
+                name,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=CHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="cn.abovesky.shopping.domain.GoodsType">
+        update goods_type
+        <set>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=CHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="cn.abovesky.shopping.domain.GoodsType">
+    update goods_type
+    set name = #{name,jdbcType=VARCHAR},
+      status = #{status,jdbcType=CHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+    <select id="findAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from goods_type
+        where status = 'ACTIVE'
+    </select>
+    <select id="countByName" resultType="java.lang.Integer" parameterType="java.lang.String">
+        select count(0)
+        from goods_type
+        where name = #{name} and status != 'DELETED'
+    </select>
+    <select id="findByMerchantId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        SELECT distinct
+        goods_type.name,
+        goods_type.id
+        FROM
+          goods_type
+          INNER JOIN goods
+            ON (goods_type.id = goods.goods_type)
+        where goods.merchant_id = #{merchantId} and goods_type.status = 'ACTIVE'
+    </select>
+    <select id="findPageBreakByCondition" resultMap="BaseResultMap" parameterType="map">
+        select
+          <include refid="Base_Column_List"/>
+        from goods_type
+        <trim prefix="WHERE" prefixOverrides="AND|OR">
+            and status != 'DELETED'
+            <if test="keywords != null">
+                and name like "%"#{keywords}"%"
+            </if>
+        </trim>
+        order by id desc
+    </select>
+    <select id="getTotalCount" resultType="int" parameterType="map">
+        select
+        count(0)
+        from goods_type
+        <trim prefix="WHERE" prefixOverrides="AND|OR">
+            and status != 'DELETED'
+            <if test="keywords != null">
+                and name like "%"#{keywords}"%"
+            </if>
+        </trim>
+    </select>
+    <update id="delete" parameterType="java.lang.Integer">
+        update goods_type set status = 'DELETED' where id in
+        <foreach collection="array" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
+</mapper>

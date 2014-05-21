@@ -1,0 +1,332 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.abovesky.shopping.dao.UserMapper" >
+  <resultMap id="BaseResultMap" type="cn.abovesky.shopping.domain.User" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="username" property="username" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="nickname" property="nickname" jdbcType="VARCHAR" />
+    <result column="gender" property="gender" jdbcType="CHAR" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="birthday" property="birthday" jdbcType="DATE" />
+    <result column="credit" property="credit" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="CHAR" />
+    <result column="real_name" property="realName" jdbcType="VARCHAR" />
+    <result column="identity_card" property="identityCard" jdbcType="VARCHAR" />
+    <result column="school_id" property="schoolId" jdbcType="INTEGER" />
+    <result column="area_id" property="areaId" jdbcType="INTEGER" />
+    <result column="block_id" property="blockId" jdbcType="INTEGER" />
+    <result column="layer_id" property="layerId" jdbcType="INTEGER" />
+    <result column="room_id" property="roomId" jdbcType="INTEGER" />
+    <result column="block" property="block" jdbcType="VARCHAR" />
+    <result column="room" property="room" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, username, password, nickname, gender, phone, birthday, credit, status, real_name, 
+    identity_card, school_id, area_id, block_id, layer_id, room_id, block, room
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from user
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from user
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.abovesky.shopping.domain.User" >
+    insert into user (id, username, password, 
+      nickname, gender, phone, 
+      birthday, credit, status, 
+      real_name, identity_card, school_id, 
+      area_id, block_id, layer_id, 
+      room_id, block, room)
+    values (#{id,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{nickname,jdbcType=VARCHAR}, #{gender,jdbcType=CHAR}, #{phone,jdbcType=VARCHAR}, 
+      #{birthday,jdbcType=DATE}, #{credit,jdbcType=INTEGER}, #{status,jdbcType=CHAR}, 
+      #{realName,jdbcType=VARCHAR}, #{identityCard,jdbcType=VARCHAR}, #{schoolId,jdbcType=INTEGER}, 
+      #{areaId,jdbcType=INTEGER}, #{blockId,jdbcType=INTEGER}, #{layerId,jdbcType=INTEGER}, 
+      #{roomId,jdbcType=INTEGER}, #{block,jdbcType=VARCHAR}, #{room,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.abovesky.shopping.domain.User" >
+    insert into user
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="username != null" >
+        username,
+      </if>
+      <if test="password != null" >
+        password,
+      </if>
+      <if test="nickname != null" >
+        nickname,
+      </if>
+      <if test="gender != null" >
+        gender,
+      </if>
+      <if test="phone != null" >
+        phone,
+      </if>
+      <if test="birthday != null" >
+        birthday,
+      </if>
+      <if test="credit != null" >
+        credit,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="realName != null" >
+        real_name,
+      </if>
+      <if test="identityCard != null" >
+        identity_card,
+      </if>
+      <if test="schoolId != null" >
+        school_id,
+      </if>
+      <if test="areaId != null" >
+        area_id,
+      </if>
+      <if test="blockId != null" >
+        block_id,
+      </if>
+      <if test="layerId != null" >
+        layer_id,
+      </if>
+      <if test="roomId != null" >
+        room_id,
+      </if>
+        <if test="block != null" >
+            block,
+        </if>
+        <if test="room != null" >
+            room,
+        </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="username != null" >
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="nickname != null" >
+        #{nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null" >
+        #{gender,jdbcType=CHAR},
+      </if>
+      <if test="phone != null" >
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="birthday != null" >
+        #{birthday,jdbcType=DATE},
+      </if>
+      <if test="credit != null" >
+        #{credit,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=CHAR},
+      </if>
+      <if test="realName != null" >
+        #{realName,jdbcType=VARCHAR},
+      </if>
+      <if test="identityCard != null" >
+        #{identityCard,jdbcType=VARCHAR},
+      </if>
+      <if test="schoolId != null" >
+        #{schoolId,jdbcType=INTEGER},
+      </if>
+      <if test="areaId != null" >
+        #{areaId,jdbcType=INTEGER},
+      </if>
+      <if test="blockId != null" >
+        #{blockId,jdbcType=INTEGER},
+      </if>
+      <if test="layerId != null" >
+        #{layerId,jdbcType=INTEGER},
+      </if>
+      <if test="roomId != null" >
+        #{roomId,jdbcType=INTEGER},
+      </if>
+        <if test="block != null" >
+            #{block,jdbcType=VARCHAR},
+        </if>
+        <if test="room != null" >
+            #{room,jdbcType=VARCHAR},
+        </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.abovesky.shopping.domain.User" >
+    update user
+    <set >
+      <if test="password != null" >
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="nickname != null" >
+        nickname = #{nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null" >
+        gender = #{gender,jdbcType=CHAR},
+      </if>
+      <if test="phone != null" >
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="birthday != null" >
+        birthday = #{birthday,jdbcType=DATE},
+      </if>
+      <if test="credit != null" >
+        credit = #{credit,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=CHAR},
+      </if>
+      <if test="realName != null" >
+        real_name = #{realName,jdbcType=VARCHAR},
+      </if>
+      <if test="identityCard != null" >
+        identity_card = #{identityCard,jdbcType=VARCHAR},
+      </if>
+      <if test="schoolId != null" >
+        school_id = #{schoolId,jdbcType=INTEGER},
+      </if>
+      <if test="areaId != null" >
+        area_id = #{areaId,jdbcType=INTEGER},
+      </if>
+      <if test="blockId != null" >
+        block_id = #{blockId,jdbcType=INTEGER},
+      </if>
+      <if test="layerId != null" >
+        layer_id = #{layerId,jdbcType=INTEGER},
+      </if>
+      <if test="roomId != null" >
+        room_id = #{roomId,jdbcType=INTEGER},
+      </if>
+        <if test="block != null" >
+            block = #{block,jdbcType=VARCHAR},
+        </if>
+        <if test="room != null" >
+            room = #{room,jdbcType=VARCHAR},
+        </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.abovesky.shopping.domain.User" >
+    update user
+    set
+      password = #{password,jdbcType=VARCHAR},
+      nickname = #{nickname,jdbcType=VARCHAR},
+      gender = #{gender,jdbcType=CHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      birthday = #{birthday,jdbcType=DATE},
+      credit = #{credit,jdbcType=INTEGER},
+      status = #{status,jdbcType=CHAR},
+      real_name = #{realName,jdbcType=VARCHAR},
+      identity_card = #{identityCard,jdbcType=VARCHAR},
+      school_id = #{schoolId,jdbcType=INTEGER},
+      area_id = #{areaId,jdbcType=INTEGER},
+      block_id = #{blockId,jdbcType=INTEGER},
+      layer_id = #{layerId,jdbcType=INTEGER},
+      room_id = #{roomId,jdbcType=INTEGER},
+      block = #{block,jdbcType=VARCHAR},
+      room = #{room,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+    <select id="countByUsername" resultType="java.lang.Integer" parameterType="java.lang.String">
+        select count(0)
+        from user
+        where username = #{username} and status != 'DELETED'
+    </select>
+    <select id="findByUsername" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+          <include refid="Base_Column_List"/>
+        from user
+        where username = #{username} and status != 'DELETED'
+    </select>
+    <update id="addCredit" parameterType="map">
+        update user set credit = credit + #{credit} where id = #{id}
+    </update>
+    <select id="getCreditByUserId" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+        select credit
+        from user
+        where id = #{id} and status = 'ACTIVE'
+    </select>
+    <select id="findPageBreakByCondition" resultMap="BaseResultMap" parameterType="map">
+        select
+            id,
+            username,
+            nickname,
+            gender,
+            birthday,
+            credit,
+            status,
+            school_id,
+            area_id,
+            block,
+            room
+        from user
+        <trim prefix="WHERE" prefixOverrides="AND|OR">
+            <choose>
+                <when test="status == null">
+                    and status = 'ACTIVE'
+                </when>
+                <when test="status == 'ALL'.toString()">
+                    and status != 'DELETED'
+                </when>
+                <otherwise>
+                    and status = #{status}
+                </otherwise>
+            </choose>
+            <if test="keywords != null">
+                and username like "%"#{keywords}"%"
+            </if>
+            <if test="keywords2 != null">
+                and nickname like "%"#{keywords2}"%"
+            </if>
+        </trim>
+        order by id desc
+    </select>
+    <select id="getTotalCount" resultType="int" parameterType="map">
+        select
+          count(0)
+        from user
+        <trim prefix="WHERE" prefixOverrides="AND|OR">
+            <choose>
+                <when test="status == null">
+                    and status = 'ACTIVE'
+                </when>
+                <when test="status == 'ALL'.toString()">
+                    and status != 'DELETED'
+                </when>
+                <otherwise>
+                    and status = #{status}
+                </otherwise>
+            </choose>
+            <if test="keywords != null">
+                and username like "%"#{keywords}"%"
+            </if>
+            <if test="keywords2 != null">
+                and nickname like "%"#{keywords2}"%"
+            </if>
+        </trim>
+    </select>
+    <update id="active" parameterType="java.lang.Integer">
+        update user set status = 'ACTIVE' where id in
+        <foreach collection="array" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
+    <update id="inactive" parameterType="java.lang.Integer">
+        update user set status = 'INACTIVE' where id in
+        <foreach collection="array" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
+</mapper>
