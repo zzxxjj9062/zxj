@@ -62,30 +62,6 @@ public abstract class BaseController {
         }
     }
 
-    protected String getGoodsImagePath() {
-        if (this.isWindowSeparator()) {
-            return request.getServletContext().getRealPath("\\upload\\GoodsImage") + "\\";
-        } else {
-            return request.getServletContext().getRealPath("/upload/GoodsImage") + "/";
-        }
-    }
-
-    protected String getMerchantImagePath() {
-        if (this.isWindowSeparator()) {
-            return request.getServletContext().getRealPath("\\upload\\MerchantImages") + "\\";
-        } else {
-            return request.getServletContext().getRealPath("/upload/MerchantImages") + "/";
-        }
-    }
-
-    protected String getImageRecommendPath() {
-        if (this.isWindowSeparator()) {
-            return request.getServletContext().getRealPath("\\upload\\ImageRecommend") + "\\";
-        } else {
-            return request.getServletContext().getRealPath("/upload/ImageRecommend") + "/";
-        }
-    }
-
     protected Merchant getMerchant() {
         return request.getSession().getAttribute(Constants.LOGIN_MERCHANT) != null ? (Merchant) request.getSession().getAttribute(Constants.LOGIN_MERCHANT) : null;
     }

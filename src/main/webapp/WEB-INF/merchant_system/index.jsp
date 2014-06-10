@@ -68,15 +68,25 @@
         function closedialog() {
             return closeDialog("${pageContext.request.contextPath}/merchant/goodsType/showList");
         }
+
+        function ConfirmClose() {
+            $.get('${pageContext.request.contextPath}/passport/merchant_logout.html');
+        }
+
         //通过该方法与后台交互，确保推送时能找到指定用户
         function onPageLoad(){
             var merchantId = '${login_merchant.id}';
             MessagePush.onPageLoad(merchantId);
+            try{
+                if(!window.onbeforeunload )
+                    window.onbeforeunload = ConfirmClose;
+            }catch(e){}
 
         }
         //推送信息
         function showMessage(autoMessage){
             document.getElementById("orderMessage").innerHTML = autoMessage;
+            document.getElementById('order_sound').play();
         }
 
         function hideOrderMessage() {
@@ -87,6 +97,8 @@
 </head>
 
 <body scroll="no" onload="onPageLoad();dwr.engine.setActiveReverseAjax(true);dwr.engine.setNotifyServerOnPageUnload(true);dwr.engine.setErrorHandler(function(){});">
+<audio src="${pageContext.request.contextPath}/styles/media/order_sound.mp3" id="order_sound">
+</audio>
 <div id="layout">
 <div id="header">
     <div class="headerNav">
@@ -152,7 +164,7 @@
                     </div>
                     <div class="right">
                         <c:if test="${not empty storeImage}">
-                            <img height="59" src="${pageContext.request.contextPath}/upload/MerchantImages/${storeImage}" alt="店铺图片"/>
+                            <img height="59" src="http://wmlm.qiniudn.com/merchantImage/${storeImage}/style300.jpg" alt="店铺图片"/>
                         </c:if>
                     </div>
                     <p><span>欢迎您：${login_merchant.storeName}</span></p>
@@ -180,6 +192,10 @@
             }
         });
     }
+    <c:if test="${isExistWaitOrder eq true}">
+        document.getElementById("orderMessage").innerHTML = "您有新订单";
+        document.getElementById('order_sound').play();
+    </c:if>
 </script>
 </body>
 </html>

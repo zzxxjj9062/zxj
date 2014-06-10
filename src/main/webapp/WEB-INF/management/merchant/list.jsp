@@ -76,7 +76,7 @@
                 <td><input name="ids" value="${item.id}_${item.status}" type="checkbox"></td>
                 <td class="td_goods_img">
                     <c:if test="${not empty item.image}">
-                        <img src="${pageContext.request.contextPath}/upload/MerchantImages/${item.image}" style="width: 166px; height: 100px"/>
+                        <img src="http://wmlm.qiniudn.com/merchantImage/${item.image}/style300.jpg" style="width: 166px; height: 100px"/>
                     </c:if>
                 </td>
                 <td>${item.username}</td>

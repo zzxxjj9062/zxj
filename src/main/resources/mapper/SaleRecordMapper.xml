@@ -13,6 +13,7 @@
         <id column="goodsId" property="id" jdbcType="INTEGER" />
         <result column="goods_name" property="name" jdbcType="VARCHAR" />
         <result column="goods_image" property="image" jdbcType="VARCHAR" />
+        <result column="goods_description" property="description" jdbcType="VARCHAR" />
         <result column="goods_price" property="price" jdbcType="REAL" />
         <result column="goods_number" property="number" jdbcType="INTEGER" />
         <result column="goods_sale_count" property="saleCount" jdbcType="INTEGER" />
@@ -21,6 +22,11 @@
         <association property="merchant" javaType="cn.abovesky.shopping.domain.Merchant">
             <id column="merchantId" property="id" jdbcType="INTEGER" />
             <result column="merchant_store_name" property="storeName" jdbcType="VARCHAR" />
+            <result column="merchant_address" property="address" jdbcType="VARCHAR"/>
+            <result column="merchant_phone" property="phone" jdbcType="VARCHAR"/>
+            <result column="merchant_image" property="image" jdbcType="VARCHAR"/>
+            <result column="merchant_sale_count" property="saleCount" jdbcType="INTEGER"/>
+            <result column="merchant_collection_count" property="collectionCount" jdbcType="INTEGER"/>
         </association>
     </resultMap>
   <sql id="Base_Column_List" >
@@ -145,8 +151,14 @@
         select
             merchant.id merchantId,
             merchant.store_name merchant_store_name,
+            merchant.phone merchant_phone,
+            merchant.address merchant_address,
+            merchant.sale_count merchant_sale_count,
+            merchant.image merchant_image,
+            merchant.collection_count merchant_collection_count,
             goods.name goods_name,
             goods.id goodsId,
+            goods.description goods_description,
             goods.price goods_price,
             goods.number goods_number,
             goods.image goods_image,

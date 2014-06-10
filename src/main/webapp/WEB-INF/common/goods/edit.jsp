@@ -47,7 +47,7 @@
                 <dd>
                     <input type="file" name="imageFile"/>
                     <c:if test="${not empty goods.image}">
-                        <img width="200" src="${pageContext.request.contextPath}/upload/GoodsImage/${goods.image}"/>
+                        <img width="200" src="http://wmlm.qiniudn.com/goodsImage/${goods.image}/style300.jpg"/>
                     </c:if>
                 </dd>
             </dl>

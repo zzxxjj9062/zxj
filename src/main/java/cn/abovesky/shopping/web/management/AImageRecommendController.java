@@ -45,7 +45,7 @@ public class AImageRecommendController extends BaseController {
     @RequestMapping("/add")
     public ModelAndView add(@RequestParam("imageFile") MultipartFile image, ImageRecommend imageRecommend) {
         try {
-            imageRecommendService.add(image, imageRecommend, this.getImageRecommendPath());
+            imageRecommendService.add(image, imageRecommend);
         } catch (ServiceException e) {
             return ajaxDoneError(e.getMessage());
         }
@@ -64,7 +64,7 @@ public class AImageRecommendController extends BaseController {
     @RequestMapping("/update")
     public ModelAndView update(@RequestParam("imageFile") MultipartFile image, ImageRecommend imageRecommend) {
         try {
-            imageRecommendService.update(image, imageRecommend, this.getImageRecommendPath());
+            imageRecommendService.update(image, imageRecommend);
         } catch (ServiceException e) {
             return ajaxDoneError(e.getMessage());
         }
@@ -73,7 +73,7 @@ public class AImageRecommendController extends BaseController {
 
     @RequestMapping("/delete")
     public ModelAndView delete(String[] ids) {
-        imageRecommendService.delete(ids, this.getImageRecommendPath());
+        imageRecommendService.delete(ids);
         return ajaxDoneSuccess("删除成功");
     }
 }

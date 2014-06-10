@@ -7,9 +7,12 @@ import cn.abovesky.shopping.domain.Goods;
 import cn.abovesky.shopping.exception.ServiceException;
 import cn.abovesky.shopping.service.IGoodsService;
 import cn.abovesky.shopping.util.CompressImage;
+import cn.abovesky.shopping.util.FileUtils;
 import cn.abovesky.shopping.util.IdStatusSplitUtils;
 import cn.abovesky.shopping.util.PathUtils;
+import com.qiniu.api.auth.AuthException;
 import org.apache.ibatis.session.RowBounds;
+import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,13 +42,17 @@ public class GoodsServiceImpl implements IGoodsService {
     }
 
     @Override
-    public void add(MultipartFile image, Goods goods, String filePath) throws ServiceException {
+    public void add(MultipartFile image, Goods goods) throws ServiceException {
         if (!image.isEmpty()) {
             String filename = UUID.randomUUID().toString() + PathUtils.fileSuffix(image.getOriginalFilename());
             try {
-                new CompressImage().compressPic(image.getInputStream(), filePath + filename, 300, 300, true);
+                FileUtils.upload(image.getInputStream(), "goodsImage/" + filename);
+            } catch (AuthException e) {
+                throw new ServiceException("上传图片失败");
+            } catch (JSONException e) {
+                throw new ServiceException("上传图片失败");
             } catch (IOException e) {
-                throw new ServiceException(e.getMessage());
+                throw new ServiceException("上传图片失败");
             }
             goods.setImage(filename);
         }
@@ -55,6 +62,7 @@ public class GoodsServiceImpl implements IGoodsService {
         goods.setUpdateDate(now);
         goods.setRemarkCount(0);
         goods.setSaleCount(0);
+        goods.getName().replace('_', '-');
         goods.setCollectionCount(0);
         goodsMapper.insert(goods);
     }
@@ -65,22 +73,24 @@ public class GoodsServiceImpl implements IGoodsService {
     }
 
     @Override
-    public void update(MultipartFile image, Goods goods, String goodsImagePath) throws ServiceException {
+    public void update(MultipartFile image, Goods goods) throws ServiceException {
         if (!image.isEmpty()) {
             if (!StringUtils.isEmpty(goods.getOriginalImage())) {
-                File originalImage = new File(goodsImagePath + goods.getOriginalImage());
-                if (originalImage.exists()) {
-                    originalImage.delete();
-                }
+                FileUtils.delete("wmlm", "goodsImage/" + goods.getOriginalImage());
             }
             String filename = UUID.randomUUID().toString() + PathUtils.fileSuffix(image.getOriginalFilename());
             try {
-                new CompressImage().compressPic(image.getInputStream(), goodsImagePath + filename, 300, 300, true);
+                FileUtils.upload(image.getInputStream(), "goodsImage/" + filename);
+            } catch (AuthException e) {
+                throw new ServiceException("上传图片失败");
+            } catch (JSONException e) {
+                throw new ServiceException("上传图片失败");
             } catch (IOException e) {
-                throw new ServiceException(e.getMessage());
+                throw new ServiceException("上传图片失败");
             }
             goods.setImage(filename);
         }
+        goods.getName().replace('_', '-');
         goods.setUpdateDate(new Date());
         goodsMapper.updateByPrimaryKeySelective(goods);
     }

@@ -215,7 +215,7 @@
         select
         <include refid="Base_Column_List"/>
         from merchant
-        where username = #{username} and status = 'ACTIVE'
+        where username = #{username} and status != 'DELETE'
     </select>
     <select id="findPageBreakByCondition" resultMap="BaseResultMap" parameterType="map">
         SELECT

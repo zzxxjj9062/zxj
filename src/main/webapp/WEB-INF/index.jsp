@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
-<%--<%@ include file="/include.jsp" %>--%>
+<%@ include file="/include.jsp" %>
 <!DOCTYPE html>
 <html lang="zh-cn">
 <head>
@@ -10,14 +10,7 @@
     ${'admin' eq flag ? '' : '<meta name="description" content="外卖,外卖联盟,高校外卖"/><meta name="author" content="外卖联盟"/>'}
     <title>${'admin' eq flag ? '外卖联盟管理登录' : '外卖联盟'}</title>
 
-    <!-- Bootstrap core CSS
-      注意：此文件跟随官网最新版本更新，随时会有改变。建议使用下面v3.0.3版本的CDN链接！
-     -->
-    <!--<link href="../dist/css/bootstrap.min.css" rel="stylesheet">-->
-
-    <!-- Hi，如果你要在自己的网站上引入bootstrap样式文件的话，请使用当前最新版本v3.0.3的CDN链接，页面加载速度会更快！-->
     <link rel="stylesheet" href="http://cdn.bootcss.com/twitter-bootstrap/3.0.3/css/bootstrap.min.css">
-
 
     <!-- Documentation extras -->
     <link href="${pageContext.request.contextPath}/styles/index/docs.css" rel="stylesheet">
@@ -54,18 +47,13 @@
     </style>
 
     <!--[if lt IE 9]>
-    <script src="../docs-assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+    <script src="${pageContext.request.contextPath}/styles/index/ie8-responsive-file-warning.js"></script><![endif]-->
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
     <script src="http://cdn.bootcss.com/html5shiv/3.7.0/html5shiv.min.js"></script>
     <script src="http://cdn.bootcss.com/respond.js/1.3.0/respond.min.js"></script>
     <![endif]-->
-
-    <!-- Favicons -->
-    <link rel="apple-touch-icon-precomposed" sizes="144x144"
-          href="../docs-assets/ico/apple-touch-icon-144-precomposed.png">
-    <link rel="shortcut icon" href="../docs-assets/ico/favicon.png">
 
 </head>
 <body>
@@ -97,7 +85,9 @@
                     <input type="text" placeholder="验证码" class="form-control" id="code" name="code"/>
                 </div>
                 <button type="submit" class="btn btn-danger" id="login">登录</button>
-                ${'admin' eq flag ? '' : '<a class="btn btn-warning" href="#">注册</a>'}
+                <c:if test="${flag ne 'admin'}">
+                    <a class="btn btn-warning" href="${pageContext.request.contextPath}/register.html">注册</a>
+                </c:if>
             </form>
         </nav>
     </div>
@@ -109,7 +99,16 @@
     <div class="container">
         <h1>Android客户端下载</h1>
 
-        <p><a class="btn btn-outline-inverse btn-lg" href="#">下载最新版</a></p>
+        <p>
+            <c:choose>
+                <c:when test="${not empty apkUrl}">
+                    <a class="btn btn-outline-inverse btn-lg" id="download" href="http://wmlm.qiniudn.com/apk/${apkUrl}">下载最新版</a>
+                </c:when>
+                <c:otherwise>
+                    <a class="btn btn-outline-inverse btn-lg" id="download" href="${pageContext.request.contextPath}/">下载最新版</a>
+                </c:otherwise>
+            </c:choose>
+        </p>
     </div>
 </div>
 
@@ -123,15 +122,15 @@
                 <ul class="nav bs-sidenav">
                     <li>
                         <a href="#wmlm">外卖联盟</a>
+                        <ul class="nav">
+                            <li><a href="#client">客户端</a></li>
+                        </ul>
                     </li>
                     <li>
                         <a href="#announcement">公告</a>
                     </li>
                     <li>
                         <a href="#cooperate">合作</a>
-                    </li>
-                    <li>
-                        <a href="#we">关于我们</a>
                     </li>
                 </ul>
             </div>
@@ -146,6 +145,29 @@
                     <h1 id="wmlm">外卖联盟</h1>
                 </div>
                 <p>我们是一个致力于高校外卖的平台，目前主要是做移动端。</p>
+                <h2 id="client">客户端</h2>
+                <div class="row">
+                    <div class="col-xs-6 col-md-3">
+                        <a href="#" class="thumbnail">
+                            <img src="http://wmlm.qiniudn.com/index/11.png/style179x304.jpg"/>
+                        </a>
+                    </div>
+                    <div class="col-xs-6 col-md-3">
+                        <a href="#" class="thumbnail">
+                            <img src="http://wmlm.qiniudn.com/index/22.png/style179x304.jpg"/>
+                        </a>
+                    </div>
+                    <div class="col-xs-6 col-md-3">
+                        <a href="#" class="thumbnail">
+                            <img src="http://wmlm.qiniudn.com/index/33.png/style179x304.jpg"/>
+                        </a>
+                    </div>
+                    <div class="col-xs-6 col-md-3">
+                        <a href="#" class="thumbnail">
+                            <img src="http://wmlm.qiniudn.com/index/44.png/style179x304.jpg"/>
+                        </a>
+                    </div>
+                </div>
             </div>
             <!-- announcement
             ================================================== -->
@@ -166,24 +188,9 @@
                 <div class="page-header">
                     <h1 id="cooperate">合作</h1>
                 </div>
-                <p>联系电话：18202877930</p>
-
                 <p>QQ：2210707748</p>
 
                 <p>Email：boss@abovesky.cn</p>
-            </div>
-
-            <!-- we
-            ================================================== -->
-            <div class="bs-docs-section">
-                <div class="page-header">
-                    <h1 id="we">关于我们</h1>
-                </div>
-                <p>客户端开发：石昊、王磊</p>
-
-                <p>服务器端开发：宋雪勦</p>
-
-                <p>美工：</p>
             </div>
 
         </div>
@@ -194,21 +201,15 @@
     ================================================== -->
 <footer class="bs-footer" role="contentinfo">
     <div class="container">
-        <p>版权归<a href="#">外卖联盟</a>所有</p>
+        <p>版权归<a href="${pageContext.request.contextPath}/">外卖联盟</a>所有</p>
+        <p>浙ICP备13020327号</p><br/>
+        <p>友情链接：<a href="http://www.stardustsky.net" target="_blank">stardustsky</a></p>
     </div>
 </footer>
 <!-- JS and analytics only. -->
 <!-- Bootstrap core JavaScript
 ================================================== -->
-<!-- Placed at the end of the document so the pages load faster -->
 <script src="http://cdn.bootcss.com/jquery/1.10.2/jquery.min.js"></script>
-
-<!-- Bootstrap core JS file
-  注意：此文件跟随官网最新版本更新，随时会有改变。建议使用下面v3.0.3版本的CDN链接！
- -->
-<!--<script src="../dist/js/bootstrap.js"></script>-->
-
-<!-- Hi，如果你要在自己的网站上引入bootstrap JS文件的话，请使用当前最新版本v3.0.3的CDN链接，页面加载速度会更快！-->
 <script src="http://cdn.bootcss.com/twitter-bootstrap/3.0.3/js/bootstrap.min.js"></script>
 <script src="http://cdn.bootcss.com/holder/2.0/holder.min.js"></script>
 <script src="http://cdn.bootcss.com/highlight.js/7.3/highlight.min.js"></script>
@@ -237,7 +238,7 @@
         }
     });
 
-    //validation funtion
+    //validation function
     function isSecret(id, min_length, max_length) {
         var check = /^[A-Za-z0-9_]+$/;
         if ($(id).val() == '') {
@@ -293,7 +294,7 @@
             num_display_entries: 3,
             callback: function (page_id) {
                 $('#list-content').html('');
-                $.getJSON('${pageContext.request.contextPath}/news?pageNum=' + page_id, function (data) {
+                $.getJSON('${pageContext.request.contextPath}/news/' + page_id, function (data) {
                     for (var i = 0; i < data['newsList'].length; i++) {
                         var title;
                         var less_title;
@@ -331,6 +332,13 @@
         $('#pagination>ul').eq(0).attr('class', 'pagination');
     });
 
+    //add download count
+    $('#download').click(function() {
+        var url = '${apkUrl}';
+        if (url != '') {
+            $.get('${pageContext.request.contextPath}/addDownloadCount');
+        }
+    });
 </script>
 </body>
 </html>

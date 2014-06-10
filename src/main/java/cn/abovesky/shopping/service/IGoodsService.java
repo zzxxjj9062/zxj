@@ -14,11 +14,11 @@ public interface IGoodsService {
     static final String SERVICE_NAEM = "goodsService";
     List<Goods> search(BaseConditionVO vo);
 
-    void add(MultipartFile image, Goods goods, String filePath) throws ServiceException;
+    void add(MultipartFile image, Goods goods) throws ServiceException;
 
     Goods findById(Integer goodsId);
 
-    void update(MultipartFile image, Goods goods, String goodsImagePath) throws ServiceException;
+    void update(MultipartFile image, Goods goods) throws ServiceException;
 
     void delete(String[] idsAndStatuses);
 

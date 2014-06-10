@@ -17,7 +17,7 @@ public class ComOrderController extends BaseController {
     @RequestMapping("/cancel")
     public ModelAndView cancel(String[] ids) {
         try {
-            orderService.cancel(ids);
+            orderService.cancel(ids, this.getMerchant() != null ? this.getMerchant().getStoreName() : "外卖联盟");
         } catch (ServiceException e) {
             return ajaxDoneError(e.getMessage());
         }

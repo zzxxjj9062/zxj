@@ -30,4 +30,16 @@ public class UMerchantController extends BaseController {
         map.put("merchants", merchantList);
         return map;
     }
+
+    @RequestMapping("/detail")
+    public @ResponseBody Map<String, Object> detail(Integer merchantId) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        if (merchantId == null || merchantId == 0) {
+            map.put("merchant", null);
+            return map;
+        } else {
+            map.put("merchant", merchantService.findById(merchantId));
+            return map;
+        }
+    }
 }

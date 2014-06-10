@@ -66,10 +66,20 @@
             return closeDialog("${pageContext.request.contextPath}/merchant/goodsType/showList");
         }
 
+        function ConfirmClose() {
+            $.get('${pageContext.request.contextPath}/passport/manage_logout.html');
+        }
+
+        function onPageLoad(){
+            try{
+                if(!window.onbeforeunload )
+                    window.onbeforeunload = ConfirmClose;
+            }catch(e){}
+        }
     </script>
 </head>
 
-<body scroll="no">
+<body scroll="no" onload="onPageLoad();">
 <div id="layout">
 <div id="header">
     <div class="headerNav">
@@ -116,6 +126,7 @@
                     <li><a href="${pageContext.request.contextPath}/manage/imageRecommend/list.html" target="navTab" rel="imageRecommend_list">图片推荐</a></li>
                     <li><a href="${pageContext.request.contextPath}/manage/news/list.html" target="navTab" rel="news_list">新闻管理</a></li>
                     <li><a href="${pageContext.request.contextPath}/manage/news/announcement.html" target="navTab">公告管理</a></li>
+                    <li><a href="${pageContext.request.contextPath}/manage/app/list.html" target="navTab" rel="app_list">应用管理</a></li>
                 </ul>
             </div>
             <div class="accordionHeader">

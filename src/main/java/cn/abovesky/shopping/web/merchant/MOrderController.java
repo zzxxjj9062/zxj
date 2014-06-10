@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 /**
@@ -48,8 +49,10 @@ public class MOrderController extends ComOrderController {
     @RequestMapping("/confirmSend")
     public ModelAndView confirmSend(String[] ids) {
         try {
-            orderService.confirmSend(ids);
+            orderService.confirmSend(ids, this.getMerchant().getStoreName());
         } catch (ServiceException e) {
+            return ajaxDoneError(e.getMessage());
+        } catch (UnsupportedEncodingException e) {
             return ajaxDoneError(e.getMessage());
         }
         return ajaxDoneSuccess("确认成功");

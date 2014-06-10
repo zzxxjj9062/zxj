@@ -33,7 +33,7 @@ public class ComGoodsController extends BaseController {
     @RequestMapping("/edit")
     public ModelAndView edit(@RequestParam(value = "imageFile") MultipartFile image, Goods goods) {
         try {
-            goodsService.update(image, goods, this.getGoodsImagePath());
+            goodsService.update(image, goods);
         } catch (ServiceException e) {
             return ajaxDoneError("修改失败");
         }

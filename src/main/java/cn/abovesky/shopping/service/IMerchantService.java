@@ -15,7 +15,7 @@ public interface IMerchantService {
     static final String SERVICE_NAME = "merchantService";
     boolean isUniqueUsername(String username);
     void insertMerchant(Merchant merchant) throws ServiceException;
-    void update(MultipartFile image, Merchant merchant, String path) throws ServiceException;
+    void update(MultipartFile image, Merchant merchant) throws ServiceException;
     Merchant findByUsername(String username);
     List<Merchant> findPageBreakByCondition(BaseConditionVO vo);
     Integer getCollectionCountById(Integer id);

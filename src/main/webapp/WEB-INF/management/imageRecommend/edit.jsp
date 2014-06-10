@@ -40,7 +40,7 @@
                 <dd>
                     <input type="file" name="imageFile"/>
                     <c:if test="${not empty imageRecommend.image}">
-                        <img width="200" src="${pageContext.request.contextPath}/upload/ImageRecommend/${imageRecommend.image}"/>
+                        <img width="200" src="http://wmlm.qiniudn.com/imageRecommend/${imageRecommend.image}/style300.jpg"/>
                     </c:if>
                 </dd>
             </dl>

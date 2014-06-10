@@ -45,7 +45,7 @@ public class AMerchantController extends BaseController {
     @RequestMapping("/update")
     public ModelAndView update(@RequestParam("imageFile") MultipartFile image, Merchant merchant) {
         try {
-            merchantService.update(image, merchant, this.getMerchantImagePath());
+            merchantService.update(image, merchant);
         } catch (ServiceException e) {
             return ajaxDoneError("修改失败");
         }
@@ -79,9 +79,15 @@ public class AMerchantController extends BaseController {
     }
 
     @RequestMapping("/checkStoreName")
-    public @ResponseBody String checkStoreName(String storeName) {
+    public @ResponseBody String checkStoreName(String storeName, String oldStoreName) {
         try {
-            return merchantService.checkStoreName(new String(storeName.getBytes("iso-8859-1"), "utf-8"));
+            storeName = new String(storeName.getBytes("iso-8859-1"), "utf-8");
+            oldStoreName = new String(oldStoreName.getBytes("iso-8859-1"), "utf-8");
+            if (oldStoreName.equals(storeName)) {
+                return "true";
+            } else {
+                return merchantService.checkStoreName(storeName);
+            }
         } catch (UnsupportedEncodingException e) {
             return "false";
         }

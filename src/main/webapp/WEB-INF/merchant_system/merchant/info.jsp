@@ -15,7 +15,7 @@
             <dl>
                 <dt>店铺名：</dt>
                 <dd>
-                    <input type="text" name="storeName" class="required" value="${merchant.storeName}" minlength="2" maxlength="20" remote="${pageContext.request.contextPath}/merchant/checkStoreName"/>
+                    <input type="text" name="storeName" class="required" value="${merchant.storeName}" minlength="2" maxlength="20" remote="${pageContext.request.contextPath}/merchant/checkStoreName?oldStoreName=${merchant.storeName}"/>
                 </dd>
             </dl>
             <dl>
@@ -53,7 +53,7 @@
                 <dd>
                     <input type="file" name="imageFile"/>
                     <c:if test="${not empty merchant.image}">
-                        <img width="200" src="${pageContext.request.contextPath}/upload/MerchantImages/${merchant.image}"/>
+                        <img width="200" src="http://wmlm.qiniudn.com/merchantImage/${merchant.image}/style300.jpg"/>
                     </c:if>
                 </dd>
             </dl>

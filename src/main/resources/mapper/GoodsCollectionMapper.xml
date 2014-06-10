@@ -17,6 +17,11 @@
           <association property="merchant" javaType="cn.abovesky.shopping.domain.Merchant">
               <id column="merchant_id" property="id" jdbcType="INTEGER"/>
               <result column="merchant_store_name" property="storeName" jdbcType="VARCHAR"/>
+              <result column="merchant_address" property="address" jdbcType="VARCHAR"/>
+              <result column="merchant_phone" property="phone" jdbcType="VARCHAR"/>
+              <result column="merchant_image" property="image" jdbcType="VARCHAR"/>
+              <result column="merchant_sale_count" property="saleCount" jdbcType="INTEGER"/>
+              <result column="merchant_collection_count" property="collectionCount" jdbcType="INTEGER"/>
           </association>
       </association>
   </resultMap>
@@ -102,6 +107,11 @@
             goods.number goods_number,
             merchant.id merchant_id,
             merchant.store_name merchant_store_name,
+            merchant.phone merchant_phone,
+            merchant.address merchant_address,
+            merchant.sale_count merchant_sale_count,
+            merchant.image merchant_image,
+            merchant.collection_count merchant_collection_count,
             goods.sale_count goods_sale_count,
             goods.remark_count goods_remark_count,
             goods.collection_count goods_collection_count

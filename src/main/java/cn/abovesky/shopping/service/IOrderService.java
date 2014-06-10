@@ -6,6 +6,7 @@ import cn.abovesky.shopping.domain.OrderDetail;
 import cn.abovesky.shopping.domain.Remark;
 import cn.abovesky.shopping.exception.ServiceException;
 
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 /**
@@ -18,11 +19,13 @@ public interface IOrderService {
 
     List<OrderDetail> search(BaseConditionVO vo);
 
-    void confirmSend(String[] ids) throws ServiceException;
+    void confirmSend(String[] ids, String storeName) throws ServiceException, UnsupportedEncodingException;
 
-    void cancel(String[] ids) throws ServiceException;
+    void cancel(String[] ids, String storeName) throws ServiceException;
 
     void confirmAndRemark(Remark remark, Integer orderId) throws ServiceException;
 
     void send(String[] ids) throws ServiceException;
+
+    boolean isExistWaitOrder(Integer merchantId);
 }

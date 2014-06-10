@@ -43,7 +43,7 @@ public class GoodsController extends ComGoodsController {
     public ModelAndView add(@RequestParam(value = "imageFile") MultipartFile image, Goods goods) {
         try {
             goods.setMerchantId(getMerchant().getId());
-            goodsService.add(image, goods, this.getGoodsImagePath());
+            goodsService.add(image, goods);
         } catch (ServiceException e) {
             return ajaxDoneError(e.getMessage());
         }

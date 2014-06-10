@@ -15,13 +15,13 @@ public interface IImageRecommendService {
 
     List<ImageRecommend> search(BaseConditionVO vo);
 
-    void add(MultipartFile image, ImageRecommend imageRecommend, String imageRecommendPath) throws ServiceException;
+    void add(MultipartFile image, ImageRecommend imageRecommend) throws ServiceException;
 
     ImageRecommend findById(Integer id);
 
-    void update(MultipartFile image, ImageRecommend imageRecommend, String imageRecommendPath) throws ServiceException;
+    void update(MultipartFile image, ImageRecommend imageRecommend) throws ServiceException;
 
-    void delete(String[] ids, String imageRecommendPath);
+    void delete(String[] ids);
 
     List<ImageRecommend> findAll();
 }

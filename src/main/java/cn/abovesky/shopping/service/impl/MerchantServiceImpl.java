@@ -7,10 +7,13 @@ import cn.abovesky.shopping.domain.Merchant;
 import cn.abovesky.shopping.exception.ServiceException;
 import cn.abovesky.shopping.service.IMerchantService;
 import cn.abovesky.shopping.util.CompressImage;
+import cn.abovesky.shopping.util.FileUtils;
 import cn.abovesky.shopping.util.IdStatusSplitUtils;
 import cn.abovesky.shopping.util.PathUtils;
+import com.qiniu.api.auth.AuthException;
 import org.apache.ibatis.annotations.Update;
 import org.apache.ibatis.session.RowBounds;
+import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,32 +45,39 @@ public class MerchantServiceImpl implements IMerchantService {
     public void insertMerchant(Merchant merchant) throws ServiceException {
         if (!isUniqueUsername(merchant.getUsername()))
             throw new ServiceException("用户名已存在");
+        if (merchantMapper.countByStoreName(merchant.getStoreName()) > 0 || merchant.getStoreName().contains("外卖联盟")) {
+            throw new ServiceException("店铺名已存在");
+        }
         Date now = new Date();
         merchant.setPassword(DigestUtils.md5DigestAsHex(merchant.getPassword().getBytes()));
         merchant.setInsertDate(now);
         merchant.setUpdateDate(now);
-        merchant.setStatus(MerchantStatus.ACTIVE.toString());
+        merchant.setStatus(MerchantStatus.PENDING.toString());
         merchant.setSaleCount(0);
         merchant.setCollectionCount(0);
         merchantMapper.insert(merchant);
     }
 
     @Override
-    public void update(MultipartFile image, Merchant merchant, String path) throws ServiceException {
+    public void update(MultipartFile image, Merchant merchant) throws ServiceException {
         if (!image.isEmpty()) {
             if (!StringUtils.isEmpty(merchant.getImage())) {
-                File originalImage = new File(path + merchant.getImage());
-                if (originalImage.exists()) {
-                    originalImage.delete();
-                }
+                FileUtils.delete("wmlm", "merchantImage/" + merchant.getImage());
             }
             String newImageFileName = UUID.randomUUID().toString() + PathUtils.fileSuffix(image.getOriginalFilename());
             try {
-                new CompressImage().compressPic(image.getInputStream(), path + newImageFileName, 300, 300, true);
+                FileUtils.upload(image.getInputStream(), "merchantImage/" + newImageFileName);
+            } catch (AuthException e) {
+                throw new ServiceException("上传图片失败");
+            } catch (JSONException e) {
+                throw new ServiceException("上传图片失败");
             } catch (IOException e) {
-                throw new ServiceException(e.getMessage());
+                throw new ServiceException("上传图片失败");
             }
             merchant.setImage(newImageFileName);
+        }
+        if (merchant.getStoreName().contains("外卖联盟")) {
+            throw new ServiceException("店铺名已存在");
         }
         merchant.setUpdateDate(new Date());
         merchantMapper.updateByPrimaryKeySelective(merchant);
@@ -107,7 +117,9 @@ public class MerchantServiceImpl implements IMerchantService {
     @Override
     public Merchant findById(Integer id) {
         Merchant merchant = merchantMapper.selectByPrimaryKey(id);
-        merchant.setPassword(null);
+        if (merchant != null) {
+            merchant.setPassword(null);
+        }
         return merchant;
     }
 
@@ -151,7 +163,7 @@ public class MerchantServiceImpl implements IMerchantService {
 
     @Override
     public String checkStoreName(String storeName) {
-        if (merchantMapper.countByStoreName(storeName) > 0) {
+        if (merchantMapper.countByStoreName(storeName) > 0 || storeName.contains("外卖联盟")) {
             return "false";
         } else {
             return "true";

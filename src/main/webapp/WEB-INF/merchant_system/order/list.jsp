@@ -76,7 +76,7 @@
         <tbody>
         <c:forEach var="item" items="${orderList}" varStatus="s">
             <tr target="item_id" rel="${item.id}">
-                <td><input name="ids" value="${item.id}_${item.status}_${item.order.user.id}_${item.goods.id}_${item.totalPrice}_${item.number}_${item.merchant.id}" type="checkbox"></td>
+                <td><input name="ids" value="${item.id}_${item.status}_${item.order.user.id}_${item.goods.id}_${item.totalPrice}_${item.number}_${item.merchant.id}_${item.order.user.username}_${item.goods.name}_${item.order.orderNumber}" type="checkbox"></td>
                 <td>${item.order.orderNumber}</td>
                 <td>${item.order.user.username}</td>
                 <td>${item.goods.name}</td>
@@ -84,12 +84,28 @@
                 <td>${item.totalPrice}</td>
                 <td>${item.order.address}</td>
                 <td><fmt:formatDate pattern="yyyy-MM-dd HH:mm:ss" value="${item.order.date}"/></td>
-                <td>
-                    <c:forEach var="status" items="${orderStatus}">
-                        <c:if test="${status eq item.status}">
-                            ${status.name}
-                        </c:if>
-                    </c:forEach>
+                <c:choose>
+                    <c:when test="${item.status eq 'WAITING'}">
+                        <td style="background-color: #f0ad4e;">
+                    </c:when>
+                    <c:when test="${item.status eq 'CONFIRMSEND'}">
+                        <td style="background-color: #3276b1;">
+                    </c:when>
+                    <c:when test="${item.status eq 'SENDING'}">
+                        <td style="background-color: #39b3d7;">
+                    </c:when>
+                    <c:when test="${item.status eq 'CONFIRM'}">
+                        <td style="background-color: #47a447;">
+                    </c:when>
+                    <c:otherwise>
+                        <td style="background-color: #d2322d">
+                    </c:otherwise>
+                </c:choose>
+                <c:forEach var="status" items="${orderStatus}">
+                    <c:if test="${status eq item.status}">
+                        ${status.name}
+                    </c:if>
+                </c:forEach>
                 </td>
             </tr>
         </c:forEach>

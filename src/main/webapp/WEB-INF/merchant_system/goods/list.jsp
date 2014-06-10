@@ -81,7 +81,7 @@
         <c:forEach var="goods" items="${goodsList}" varStatus="s">
             <tr target="goods_id" rel="${goods.id}" style="height: 120px;">
                 <td><input name="ids" value="${goods.id}_${goods.status}" type="checkbox"></td>
-                <td class="td_goods_img"><img src="${pageContext.request.contextPath}/upload/GoodsImage/${goods.image}" style="width: 166px; height: 100px"/></td>
+                <td class="td_goods_img"><img src="http://wmlm.qiniudn.com/goodsImage/${goods.image}/style300.jpg" style="width: 166px; height: 100px"/></td>
                 <td>${goods.name}</td>
                 <td>${goods.price}</td>
                 <td>${goods.number}</td>

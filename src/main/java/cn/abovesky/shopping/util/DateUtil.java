@@ -161,7 +161,6 @@ public class DateUtil {
 			XMLGregorianCalendar t_XMLGregorianCalendar = DatatypeFactory.newInstance().newXMLGregorianCalendar(ca);
 			return t_XMLGregorianCalendar.normalize().toString();
 		} catch (DatatypeConfigurationException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			throw new IllegalArgumentException("Date is null");
 		}

@@ -3,9 +3,11 @@ package cn.abovesky.shopping.web;
 import cn.abovesky.shopping.base.BaseConditionVO;
 import cn.abovesky.shopping.base.BaseController;
 import cn.abovesky.shopping.domain.News;
+import cn.abovesky.shopping.service.IAppService;
 import cn.abovesky.shopping.service.INewsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
@@ -21,11 +23,14 @@ import java.util.Map;
 public class IndexController extends BaseController {
     @Autowired
     private INewsService newsService;
+    @Autowired
+    private IAppService appService;
 
     @RequestMapping("")
     public ModelAndView index() {
         ModelAndView modelAndView = new ModelAndView("index");
         modelAndView.addObject("totalCount", newsService.getTotalCount());
+        modelAndView.addObject("apkUrl", appService.getNewestUrl());
         return modelAndView;
     }
 
@@ -34,11 +39,12 @@ public class IndexController extends BaseController {
         ModelAndView modelAndView = new ModelAndView("index");
         modelAndView.addObject("flag", "admin");
         modelAndView.addObject("totalCount", newsService.getTotalCount());
+        modelAndView.addObject("apkUrl", appService.getNewestUrl());
         return modelAndView;
     }
 
-    @RequestMapping("/news")
-    public @ResponseBody Map<String, Object> news(Integer pageNum) {
+    @RequestMapping("/news/{pageNum}")
+    public @ResponseBody Map<String, Object> news(@PathVariable("pageNum") Integer pageNum) {
         Map<String, Object> map = new HashMap<String, Object>();
         BaseConditionVO vo = new BaseConditionVO();
         vo.setPageNum(pageNum + 1);
@@ -46,5 +52,16 @@ public class IndexController extends BaseController {
         List<News> newsList = newsService.search(vo);
         map.put("newsList", newsList);
         return map;
+    }
+
+    @RequestMapping("/register")
+    public ModelAndView registerView() {
+        return new ModelAndView("register");
+    }
+
+    @RequestMapping("/addDownloadCount")
+    public String addDownloadCount() {
+        appService.addDownloadCount();
+        return null;
     }
 }

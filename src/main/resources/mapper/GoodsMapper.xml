@@ -23,6 +23,8 @@
         <association property="merchant" javaType="cn.abovesky.shopping.domain.Merchant">
             <id column="merchant_id" property="id"/>
             <result column="store_name" property="storeName"/>
+            <result column="merchant_address" property="address"/>
+            <result column="merchant_phone" property="phone"/>
         </association>
     </resultMap>
     <sql id="Base_Column_List" >
@@ -345,7 +347,8 @@
         select
             goods_type.name type_name, goods_type.id type_id, goods.id, goods.name, goods.price, goods.number,
             goods.image, goods.description, goods.insert_date, goods.update_date, goods.status,
-            goods.merchant_id, goods.goods_type, goods.sale_count, goods.remark_count, merchant.store_name, goods.collection_count
+            goods.merchant_id, goods.goods_type, goods.sale_count, goods.remark_count, merchant.store_name, goods.collection_count,
+            merchant.address merchant_address, merchant.phone merchant_phone
         from goods
         inner join goods_type on (goods.goods_type = goods_type.id AND goods_type.status = 'ACTIVE')
         inner join merchant on goods.merchant_id = merchant.id

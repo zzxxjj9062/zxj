@@ -22,4 +22,6 @@ public interface OrderDetailMapper extends BaseMapper<OrderDetail, Integer> {
     void send(Integer id);
 
     int getTotalCount(BaseConditionVO vo);
+
+    int countWaitOrderByMerchantId(Integer merchantId);
 }

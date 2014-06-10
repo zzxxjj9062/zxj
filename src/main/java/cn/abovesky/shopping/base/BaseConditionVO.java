@@ -129,4 +129,15 @@ public class BaseConditionVO {
     public void setKeywords2(String keywords2) {
         this.keywords2 = keywords2;
     }
+
+    //状态数组
+    private String[] statuses;
+
+    public String[] getStatuses() {
+        return statuses;
+    }
+
+    public void setStatuses(String[] statuses) {
+        this.statuses = statuses;
+    }
 }

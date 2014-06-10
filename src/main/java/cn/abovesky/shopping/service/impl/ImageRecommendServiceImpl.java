@@ -6,8 +6,11 @@ import cn.abovesky.shopping.domain.ImageRecommend;
 import cn.abovesky.shopping.exception.ServiceException;
 import cn.abovesky.shopping.service.IImageRecommendService;
 import cn.abovesky.shopping.util.CompressImage;
+import cn.abovesky.shopping.util.FileUtils;
 import cn.abovesky.shopping.util.PathUtils;
+import com.qiniu.api.auth.AuthException;
 import org.apache.ibatis.session.RowBounds;
+import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,11 +41,15 @@ public class ImageRecommendServiceImpl implements IImageRecommendService {
     }
 
     @Override
-    public void add(MultipartFile image, ImageRecommend imageRecommend, String imageRecommendPath) throws ServiceException {
+    public void add(MultipartFile image, ImageRecommend imageRecommend) throws ServiceException {
         if (!image.isEmpty()) {
             String filename = UUID.randomUUID().toString() + PathUtils.fileSuffix(image.getOriginalFilename());
             try {
-                new CompressImage().compressPic(image.getInputStream(), imageRecommendPath + filename, 300, 300, true);
+                FileUtils.upload(image.getInputStream(), "imageRecommend/" + filename);
+            } catch (AuthException e) {
+                throw new ServiceException("上传图片失败");
+            } catch (JSONException e) {
+                throw new ServiceException("上传图片失败");
             } catch (IOException e) {
                 throw new ServiceException("上传图片失败");
             }
@@ -60,17 +67,18 @@ public class ImageRecommendServiceImpl implements IImageRecommendService {
     }
 
     @Override
-    public void update(MultipartFile image, ImageRecommend imageRecommend, String imageRecommendPath) throws ServiceException {
+    public void update(MultipartFile image, ImageRecommend imageRecommend) throws ServiceException {
         if (!image.isEmpty()) {
             if (!StringUtils.isEmpty(imageRecommend.getOriginalImage())) {
-                File originalImage = new File(imageRecommendPath + imageRecommend.getOriginalImage());
-                if (originalImage.exists()) {
-                    originalImage.delete();
-                }
+                FileUtils.delete("wmlm", "imageRecommend/" + imageRecommend.getOriginalImage());
             }
             String filename = UUID.randomUUID().toString() + PathUtils.fileSuffix(image.getOriginalFilename());
             try {
-                new CompressImage().compressPic(image.getInputStream(), imageRecommendPath + filename, 300, 300, true);
+                FileUtils.upload(image.getInputStream(), "imageRecommend/" + filename);
+            } catch (AuthException e) {
+                throw new ServiceException("上传图片失败");
+            } catch (JSONException e) {
+                throw new ServiceException("上传图片失败");
             } catch (IOException e) {
                 throw new ServiceException("上传图片失败");
             }
@@ -81,13 +89,10 @@ public class ImageRecommendServiceImpl implements IImageRecommendService {
     }
 
     @Override
-    public void delete(String[] ids, String imageRecommendPath) {
+    public void delete(String[] ids) {
         for (String id : ids) {
-            File originalImage = new File(imageRecommendPath + id.split("_")[1]);
+            FileUtils.delete("wmlm", "imageRecommend/" + id.split("_")[1]);
             imageRecommendMapper.deleteByPrimaryKey(Integer.valueOf(id.split("_")[0]));
-            if (originalImage.exists()) {
-                originalImage.delete();
-            }
         }
     }
 
